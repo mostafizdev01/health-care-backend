@@ -9,6 +9,8 @@ const createUser = async (req:Request) => {
 
     if(req.file){
         const uploadResult = await fileUploader.uploadToCloudinary(req.file);
+        console.log(uploadResult);
+        
     }
 
     const hashPassword = await bcrypt.hash(req.body.patient.password, Number(config.BCRYPT_SOLD_ROUND));
