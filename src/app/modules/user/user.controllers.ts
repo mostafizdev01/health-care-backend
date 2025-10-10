@@ -7,6 +7,8 @@ import catchAsync from "../../shared/catchAsync";
 const createUser = catchAsync(async (req:Request, res:Response)=> {
     
     const result = await userServices.createUser(req)
+    console.log(result);
+    
     sendResponse(res, {
         statusCode: 201,
         success: true,
