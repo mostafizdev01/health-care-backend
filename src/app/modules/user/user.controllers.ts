@@ -4,11 +4,11 @@ import { userServices } from "./user.services";
 import catchAsync from "../../shared/catchAsync";
 
 
-const createUser = catchAsync(async (req:Request, res:Response)=> {
-    
+const createUser = catchAsync(async (req: Request, res: Response) => {
+
     const result = await userServices.createUser(req)
     console.log(result);
-    
+
     sendResponse(res, {
         statusCode: 201,
         success: true,
@@ -17,6 +17,19 @@ const createUser = catchAsync(async (req:Request, res:Response)=> {
     })
 })
 
+// getAll users
+
+const getAllUsers = async (req: Request, res: Response) => {
+    const result = await userServices.getAllUsers();
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "All User Get successfully",
+        data: result
+    })
+}
+
 export const userControllers = {
-    createUser
+    createUser,
+    getAllUsers
 }

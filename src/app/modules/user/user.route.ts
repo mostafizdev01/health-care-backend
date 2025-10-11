@@ -13,4 +13,6 @@ route.post("/create-patient",
        return userControllers.createUser(req, res, next)
     },
 )
+
+route.get("/", userControllers.getAllUsers)
 export const userRoutes = route;
