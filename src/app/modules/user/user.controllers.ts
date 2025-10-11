@@ -17,6 +17,18 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
+// create admin
+const createAdmin = catchAsync(async (req: Request, res: Response) => {
+    const result = await userServices.createAdmin(req)
+
+    sendResponse(res, {
+        statusCode: 201,
+        success: true,
+        message: "Admin created successfully",
+        data: result
+    })
+})
+
 // getAll users
 
 const getAllUsers = async (req: Request, res: Response) => {
@@ -31,5 +43,6 @@ const getAllUsers = async (req: Request, res: Response) => {
 
 export const userControllers = {
     createUser,
+    createAdmin,
     getAllUsers
 }

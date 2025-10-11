@@ -5,6 +5,7 @@ import { v2 as cloudinary} from "cloudinary"
 
 const storage = multer.diskStorage({ // ai file ta multar pakage theke neuya hoise.
   destination: function (req, file, cb) {
+    
     cb(null, path.join(process.cwd(), "/uploads"))
   },
   filename: function (req, file, cb) {
