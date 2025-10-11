@@ -23,5 +23,14 @@ route.post("/create-admin",
     },
 )
 
+// create doctor
+route.post("/create-doctor",
+    fileUploader.upload.single("file"), /// form data er mordhe file name er morhe image ta astese
+    (req:Request, res:Response, next:NextFunction)=> {
+        req.body = UserValidation.createDoctorValidationSchema.parse(JSON.parse(req.body.data)) // req.body.data er morhe data gula astese
+       return userControllers.createDoctor(req, res, next)
+    },
+)
+
 route.get("/", userControllers.getAllUsers)
 export const userRoutes = route;

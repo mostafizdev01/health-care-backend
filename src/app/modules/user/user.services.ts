@@ -3,7 +3,7 @@ import config from "../../../config";
 import { prisma } from "../../shared/prisma";
 import bcrypt from "bcryptjs";
 import { fileUploader } from "../../helper/fileUpload";
-import { Admin, UserRole } from "@prisma/client";
+import { Admin, Doctor, UserRole } from "@prisma/client";
 
 const createUser = async (req: Request) => {
     // console.log(req.file)
@@ -62,6 +62,37 @@ const createAdmin = async (req: Request): Promise<Admin> => {  // promise => adm
     return result
 }
 
+/// create Doctor
+const createDoctor = async (req: Request): Promise<Doctor> => {  // promise => admin type er data dibe. amdin create hoile. attokkhon wait korte hobe. promise => mane ami jodi tomake data dei taile admin type er data dibo.
+    const file = req.file;
+
+    if (file) {
+        const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
+        req.body.doctor.profilePhoto = uploadToCloudinary?.secure_url
+    }
+
+    const hashPassword: string = await bcrypt.hash(req.body.password, Number(config.BCRYPT_SOLD_ROUND))
+
+    const userData = {
+        email: req.body.doctor.email,
+        password: hashPassword,
+        role: UserRole.DOCTOR
+    }
+
+    const result = await prisma.$transaction(async (transactionClient) => {
+        await transactionClient.user.create({
+            data: userData
+        })
+
+        const createdAdminData = await transactionClient.doctor.create({
+            data: req.body.doctor
+        })
+        return createdAdminData
+    })
+
+    return result
+}
+
 const getAllUsers = async () => {
     const result = await prisma.user.findMany();
     return result
@@ -70,5 +101,6 @@ const getAllUsers = async () => {
 export const userServices = {
     createUser,
     createAdmin,
-    getAllUsers
+    getAllUsers,
+    createDoctor
 }
