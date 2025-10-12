@@ -24,7 +24,7 @@ const loginPatient = async (req: Request, res: Response) => {
     })
 
     sendResponse(res, {
-        statusCode: 201,
+        statusCode: 200,
         success: true,
         message: "User loggedin successfully!",
         data: {

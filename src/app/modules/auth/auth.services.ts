@@ -1,8 +1,8 @@
 import { UserStatus } from "@prisma/client"
 import { prisma } from "../../shared/prisma"
 import bcrypt from "bcryptjs";
-import { JwtHeper } from "../../helper/jwtHelper";
 import { email } from "zod";
+import { JwtHelper } from "../../helper/jwtHelper";
 
 const loginPatient = async (payload:{email:string, password: string})=> {
     const user = await prisma.user.findFirstOrThrow({
@@ -20,8 +20,8 @@ const loginPatient = async (payload:{email:string, password: string})=> {
 
     // create access token
 
-    const accessToken = JwtHeper.generateToken({email:user.email, role: user.role}, "asdf", "1h")
-    const refreshToken = JwtHeper.generateToken({email:user.email, role: user.role}, "asdfjkl", "90d")
+    const accessToken = JwtHelper.generateToken({email:user.email, role: user.role}, "asdf", "1h")
+    const refreshToken = JwtHelper.generateToken({email:user.email, role: user.role}, "asdfjkl", "90d")
 
     return {
         accessToken,
