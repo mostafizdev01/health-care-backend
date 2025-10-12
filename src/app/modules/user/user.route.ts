@@ -20,6 +20,7 @@ route.post("/create-patient",
 
 // create amdin
 route.post("/create-admin",
+    auth(UserRole.ADMIN),
     fileUploader.upload.single("file"), /// form data er mordhe file name er morhe image ta astese
     (req: Request, res: Response, next: NextFunction) => {
         req.body = UserValidation.createAdminValidationSchema.parse(JSON.parse(req.body.data)) // req.body.data er morhe data gula astese
@@ -29,6 +30,7 @@ route.post("/create-admin",
 
 // create doctor
 route.post("/create-doctor",
+    auth(UserRole.ADMIN),
     fileUploader.upload.single("file"), /// form data er mordhe file name er morhe image ta astese
     (req: Request, res: Response, next: NextFunction) => {
         req.body = UserValidation.createDoctorValidationSchema.parse(JSON.parse(req.body.data)) // req.body.data er morhe data gula astese
