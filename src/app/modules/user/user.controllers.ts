@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import sendResponse from "../../shared/sendResponse";
 import { userServices } from "./user.services";
 import catchAsync from "../../shared/catchAsync";
+import pick from "../../helper/pick";
+import { userFilterableFields } from "./user.constant";
 
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
@@ -44,7 +46,11 @@ const createDoctor = catchAsync(async (req: Request, res: Response) => {
 // getAll users
 
 const getAllUsers = async (req: Request, res: Response) => {
-    const result = await userServices.getAllUsers();
+
+    const filter = pick(req.query, userFilterableFields)
+    const options = pick(req.query, ["page", "limit", "sortBy", "sortOrder"]) // for paggination and sorting
+
+    const result = await userServices.getAllUsers(filter, options);
     sendResponse(res, {
         statusCode: 200,
         success: true,
