@@ -10,12 +10,16 @@ import emailSender from "./emailSender";
 import { emit } from "process";
 
 const login = async (payload: { email: string; password: string }) => {
-  const user = await prisma.user.findUniqueOrThrow({
+  const user = await prisma.user.findUnique({
     where: {
       email: payload.email,
       status: UserStatus.ACTIVE,
     },
   });
+
+  if(!user){
+    throw new ApiError(httpStatus.BAD_REQUEST, "User does't exits!");
+  }
 
   const isCorrectPassword = await bcrypt.compare(
     payload.password,
